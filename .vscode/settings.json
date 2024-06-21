@@ -20,7 +20,7 @@
         },
         {
             "name": "sqlalchemy", //here is the library you need
-            "depth": 2,
+            "depth": 3,
             "includeAllSymbols": true
         },
         //like this:
