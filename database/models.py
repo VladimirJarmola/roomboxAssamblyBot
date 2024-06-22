@@ -11,5 +11,6 @@ class Page(Base):
     __tablename__='page'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    number: Mapped[int] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(Text)
     image: Mapped[str] = mapped_column(String(150))

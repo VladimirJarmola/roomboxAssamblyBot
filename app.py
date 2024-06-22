@@ -11,11 +11,14 @@ from aiogram.enums import ParseMode
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv()) #подключаем переменные окружения
 
-from middlewares.db import DataBaseSession
-
 from database.engine import create_db, drop_db, session_maker
 
+from common.admin_list import admins_list
+
+from middlewares.db import DataBaseSession
+
 from handlers.user_private import user_private_router
+from handlers.admin_private import admin_router
 # from common.bot_cmds_list import private
 
 
@@ -26,11 +29,14 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML) # включаем html разметку для всего проекта
 )
 
+bot.my_admins_list = admins_list
+
 dp = Dispatcher()
 
 # dp.update.middleware(DataBaseMiddleware())
 
 dp.include_router(user_private_router)
+dp.include_router(admin_router)
 
 async def on_startup(bot):
     run_param = False
