@@ -29,8 +29,3 @@ async def assambly_menu(callback: types.CallbackQuery, callback_data: MenuCallBa
     )
     await callback.message.edit_media(media=media, reply_markup=reply_markup)
     await callback.answer()
-
-
-@user_private_router.message(F.text)
-async def error(message: types.Message):
-    await message.answer('Вспользуйтесь инлайн-клавиатурой! \nОбщение текстом не предусмотрено!')

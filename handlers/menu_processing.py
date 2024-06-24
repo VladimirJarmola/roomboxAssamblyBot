@@ -1,8 +1,9 @@
 from aiogram.types import InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.orm_query import Paginator, orm_get_assambly, orm_get_assambly_all, orm_get_logo, orm_get_pages
+from database.orm_query import orm_get_assambly, orm_get_assambly_all, orm_get_logo, orm_get_pages
 from kbds.inline import get_assambly_item_btns, get_page_btns, get_user_assambly_btns, get_user_main_btn
+from utils.paginator import Paginator
 
 
 def pages(paginator: Paginator):
