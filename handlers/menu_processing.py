@@ -54,7 +54,7 @@ async def assambly_menu(session, level):
 
 async def assamble_item_menu(session, level, assambly):
     banner = await orm_get_assambly(session, assambly)
-    image = InputMediaPhoto(media=banner.image, caption=banner.description)
+    image = InputMediaPhoto(media=banner.image, caption=f"{banner.name}\n{banner.description}")
     kbds = get_assambly_item_btns(level=level, assambly=banner.id)
     return image, kbds
 
