@@ -65,7 +65,7 @@ async def main():
     )
     webhook_requests_handler.register(app, path=os.getenv('URL_APP'))
     setup_application(app, dp, bot=bot)
-    web.run_app(app)
+    web.run_app(app, host='0.0.0.0', port=5000)
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(main())
