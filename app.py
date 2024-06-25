@@ -41,13 +41,13 @@ dp = Dispatcher()
 dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
-async def on_startup(dp):
+async def on_startup(bot):
     await bot.set_webhook(f'{BASE_WEBHOOK_URL}{WEBHOOK_PATH}') #для деплоя
     # await drop_db()
 
     await create_db()
 
-async def on_shutdown(dp):
+async def on_shutdown(bot):
     await bot.delete_webhook()#для деплоя
     logging.error('bot not working!')
 
@@ -57,7 +57,7 @@ async def main():
 
     dp.update.middleware(DataBaseSession(session_pool=session_maker))
     
-    # await bot.delete_webhook(drop_pending_updates=True)
+    await bot.delete_webhook(drop_pending_updates=True)
     # await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
 
     #для деплоя
