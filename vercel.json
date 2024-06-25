@@ -5,9 +5,9 @@
       "use": "@vercel/python"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/",
+      "src": "/(.*)",
       "dest": "/api/index"
     }
   ]
