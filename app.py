@@ -22,6 +22,10 @@ from middlewares.db import DataBaseSession
 from handlers.user_private import user_private_router
 from handlers.admin_private import admin_router
 
+WEBHOOK_PATH= f'{os.getenv("TOKEN")}'
+BASE_WEBHOOK_URL = os.getenv("URL_APP")
+
+
 
 ALLOWED_UPDATES = ['message', 'callback_query']
 
@@ -38,7 +42,7 @@ dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
 async def on_startup(dp):
-    await bot.set_webhook(os.getenv('URL_APP')) #для деплоя
+    await bot.set_webhook(f'{BASE_WEBHOOK_URL}{WEBHOOK_PATH}') #для деплоя
     # await drop_db()
 
     await create_db()
@@ -63,9 +67,9 @@ async def main():
         dispatcher=dp,
         bot=bot,
     )
-    webhook_requests_handler.register(app, path='/app')
+    webhook_requests_handler.register(app, path=WEBHOOK_PATH)
     setup_application(app, dp, bot=bot)
-    web.run_app(app, host=os.getenv('URL_APP'), port=5000)
+    web.run_app(app, host='0.0.0.0', port=3000)
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(main())
