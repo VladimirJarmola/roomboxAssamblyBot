@@ -3,9 +3,12 @@ import logging
 import sys
 import os
 
+from AIOHTTP import web
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application 
 
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv()) #подключаем переменные окружения
@@ -34,12 +37,14 @@ dp = Dispatcher()
 dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
-async def on_startup(bot):
+async def on_startup(dp):
+    await bot.set_webhook(os.getenv('URL_APP')) #для деплоя
     # await drop_db()
 
     await create_db()
 
-async def on_shutdown(bot):
+async def on_shutdown(dp):
+    await bot.delete_webhook()#для деплоя
     logging.error('bot not working!')
 
 async def main():
@@ -49,7 +54,18 @@ async def main():
     dp.update.middleware(DataBaseSession(session_pool=session_maker))
     
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
+    # await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
+
+    #для деплоя
+    # Create aiohttp.web.Application instance
+    app = web.Application()
+    webhook_requests_handler = SimpleRequestHandler(
+        dispatcher=dp,
+        bot=bot,
+    )
+    webhook_requests_handler.register(app, path=os.getenv('URL_APP'))
+    setup_application(app, dp, bot=bot)
+    web.run_app(app)
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(main())
