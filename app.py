@@ -67,7 +67,7 @@ async def main():
         dispatcher=dp,
         bot=bot,
     )
-    webhook_requests_handler.register(app, path=WEBHOOK_PATH)
+    webhook_requests_handler.register(app, path=f'/{WEBHOOK_PATH}')
     setup_application(app, dp, bot=bot)
     web.run_app(app, host='0.0.0.0', port=3000)
 
