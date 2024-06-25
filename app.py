@@ -42,7 +42,7 @@ dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
 async def on_startup(dp):
-    await bot.set_webhook(f'{BASE_WEBHOOK_URL}{WEBHOOK_PATH}/api/bot') #для деплоя
+    await bot.set_webhook(f'{BASE_WEBHOOK_URL}{WEBHOOK_PATH}/') #для деплоя
     # await drop_db()
 
     await create_db()
@@ -67,7 +67,7 @@ async def main():
         dispatcher=dp,
         bot=bot,
     )
-    webhook_requests_handler.register(app, path=f'/api/bot')
+    webhook_requests_handler.register(app, path=f'/')
     setup_application(app, dp, bot=bot)
     web.run_app(app, host='0.0.0.0', port=3000)
 
