@@ -38,7 +38,7 @@ dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
 async def on_startup(dp):
-    await bot.set_webhook('https://aiogram.dev/webhook') #для деплоя
+    await bot.set_webhook(os.getenv('URL_APP')) #для деплоя
     # await drop_db()
 
     await create_db()
@@ -63,7 +63,7 @@ async def main():
         dispatcher=dp,
         bot=bot,
     )
-    webhook_requests_handler.register(app, path='/webhook')
+    webhook_requests_handler.register(app, path='/app')
     setup_application(app, dp, bot=bot)
     web.run_app(app, host=os.getenv('URL_APP'), port=5000)
 
