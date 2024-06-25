@@ -41,13 +41,13 @@ dp = Dispatcher()
 dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
-async def on_startup(bot):
+async def on_startup(dp):
     await bot.set_webhook(f'{BASE_WEBHOOK_URL}{WEBHOOK_PATH}') #для деплоя
     # await drop_db()
 
     await create_db()
 
-async def on_shutdown(bot):
+async def on_shutdown(dp):
     await bot.delete_webhook()#для деплоя
     logging.error('bot not working!')
 
