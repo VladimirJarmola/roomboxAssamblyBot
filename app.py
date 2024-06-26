@@ -22,9 +22,9 @@ from middlewares.db import DataBaseSession
 from handlers.user_private import user_private_router
 from handlers.admin_private import admin_router
 
-from server import keep_alive
+# from server import keep_alive
 
-keep_alive()
+# keep_alive()
 
 # WEBHOOK_PATH= f'{os.getenv("TOKEN")}'
 # BASE_WEBHOOK_URL = os.getenv("URL_APP")
