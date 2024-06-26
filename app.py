@@ -3,12 +3,10 @@ import logging
 import sys
 import os
 
-# from AIOHTTP import web
-
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-# from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application 
+from aiogram.client.session.aiohttp import AiohttpSession
 
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv()) #подключаем переменные окружения
@@ -22,20 +20,15 @@ from middlewares.db import DataBaseSession
 from handlers.user_private import user_private_router
 from handlers.admin_private import admin_router
 
-# from server import keep_alive
 
-# keep_alive()
+session = AiohttpSession()
 
-# WEBHOOK_PATH= f'{os.getenv("TOKEN")}'
-# BASE_WEBHOOK_URL = os.getenv("URL_APP")
-
-
-
-ALLOWED_UPDATES = ['message', 'callback_query']
+ALLOWED_UPDATES = ['message', 'callback_query'] 
 
 bot = Bot(
     token=os.getenv('TOKEN'), 
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML) # включаем html разметку для всего проекта
+    session=session,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML), # включаем html разметку для всего проекта
 )
 
 bot.my_admins_list = admins_list
@@ -46,7 +39,6 @@ dp.include_router(user_private_router)
 dp.include_router(admin_router)
 
 async def on_startup(bot):
-    # await bot.set_webhook(f"https://aiogram.dev/webhook") #для деплоя
     # await drop_db()
 
     await create_db()
@@ -64,16 +56,6 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
 
-    #для деплоя
-    # Create aiohttp.web.Application instance
-    # app = web.Application()
-    # webhook_requests_handler = SimpleRequestHandler(
-    #     dispatcher=dp,
-    #     bot=bot,
-    # )
-    # webhook_requests_handler.register(app, path='/')
-    # setup_application(app, dp, bot=bot)
-    # web.run_app(app, host=BASE_WEBHOOK_URL, port=8443)
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 asyncio.run(main())
