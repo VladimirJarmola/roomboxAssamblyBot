@@ -10,6 +10,7 @@ session_maker = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_c
 
 
 async def create_db():
+    
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
