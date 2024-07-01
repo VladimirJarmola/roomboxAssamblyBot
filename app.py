@@ -6,6 +6,7 @@ import os
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.types import BotCommandScopeAllPrivateChats
 
 from dotenv import find_dotenv, load_dotenv
 load_dotenv(find_dotenv()) #подключаем переменные окружения
@@ -52,6 +53,7 @@ async def main():
     dp.update.middleware(DataBaseSession(session_pool=session_maker))
     
     await bot.delete_webhook(drop_pending_updates=True)
+    await bot.delete_my_commands(scope=BotCommandScopeAllPrivateChats())
     
     await dp.start_polling(bot, allowed_updates=ALLOWED_UPDATES)
 
