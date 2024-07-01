@@ -1,3 +1,4 @@
+import logging
 from aiogram import F, Router, types
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,5 +28,15 @@ async def assambly_menu(callback: types.CallbackQuery, callback_data: MenuCallBa
         assambly=callback_data.assambly,
         page=callback_data.page,
     )
-    await callback.message.edit_media(media=media, reply_markup=reply_markup)
-    await callback.answer()
+
+    if callback.message.photo[-1].file_id == media.media:
+        logging.error('Bad Request: message is not modified')
+        await callback.answer()
+    else:
+        try:
+            await callback.message.edit_media(media=media, reply_markup=reply_markup)
+            await callback.answer()
+        except Exception as e:
+            logging.exception(e)
+            await callback.answer()
+        
