@@ -5,12 +5,14 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.orm_query import orm_add_assambly, orm_delete_assambly, orm_get_assambly, orm_get_assambly_all, orm_update_assambly
+from handlers.admin_routers.url_handlers import url_handlers_router
 from kbds.inline import get_callback_btns
 
 from kbds.reply import get_keyboard
 
 
 assambly_handlers_router = Router()
+assambly_handlers_router.include_router(url_handlers_router)
 
 
 ADMIN_KB = get_keyboard(
@@ -57,7 +59,11 @@ async def starring_at_assambly(message: types.Message, session: AsyncSession):
             caption=f"<strong>{assambly_item.name}\
                     </strong>\n{assambly_item.description}",
             reply_markup=get_callback_btns(
-                btns={"Удалить": f"delete_assambly_{assambly_item.id}", "Изменить": f"change_assambly_{assambly_item.id}"}
+                btns={
+                    "Удалить": f"delete_assambly_{assambly_item.id}", 
+                    "Изменить": f"change_assambly_{assambly_item.id}",
+                    "URL": f"url_assambly_{assambly_item.id}"
+                }
             ),
         )
 

@@ -21,6 +21,7 @@ class Assambly(Base):
     name: Mapped[str] = mapped_column(String(150))
     description: Mapped[str] = mapped_column(Text)
     image: Mapped[str] = mapped_column(String(150))
+    url: Mapped[str] = mapped_column(String(150))
 
 
 class Page(Base):

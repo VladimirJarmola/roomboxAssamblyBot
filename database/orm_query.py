@@ -34,6 +34,14 @@ async def orm_add_assambly(session: AsyncSession, data: dict):
     await session.commit()
 
 
+async def orm_add_assambly_url(session: AsyncSession, assambly_id: int, data: dict):
+    query = update(Assambly).where(Assambly.id == assambly_id).values(
+        url=data['URL']
+    )
+    await session.execute(query)
+    await session.commit()
+
+
 async def orm_get_assambly_all(session: AsyncSession):
     query = select(Assambly)
     result = await session.execute(query)
@@ -51,6 +59,14 @@ async def orm_update_assambly(session: AsyncSession, assambly_id: int, data):
         name=data['name'],
         description=data['description'],
         image=data['image'],
+    )
+    await session.execute(query)
+    await session.commit()
+
+
+async def orm_update_assambly_delete_url(session: AsyncSession, assambly_id: int):
+    query = update(Assambly).where(Assambly.id == assambly_id).values(
+        url=None,
     )
     await session.execute(query)
     await session.commit()

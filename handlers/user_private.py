@@ -35,8 +35,7 @@ async def assambly_menu(callback: types.CallbackQuery, callback_data: MenuCallBa
     else:
         try:
             await callback.message.edit_media(media=media, reply_markup=reply_markup)
-            await callback.answer()
         except Exception as e:
             logging.exception(e)
+        finally:
             await callback.answer()
-        

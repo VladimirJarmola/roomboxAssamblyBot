@@ -14,7 +14,7 @@ class MenuCallBack(CallbackData, prefix='menu'):
 def get_user_main_btn(*, level: int, sizes: tuple[int] = (1,)):
     keyboard = InlineKeyboardBuilder()
     btns = {
-        'Начнем': 'start',
+        'Начнем! 🚀': 'start',
     }
     for text, menu_name in btns.items():
         if menu_name == 'start':
@@ -44,10 +44,14 @@ def get_user_assambly_btns(*, level: int, assambly: list, sizes: tuple[int] = (1
     return keyboard.adjust(*sizes).as_markup()
 
 
-def get_assambly_item_btns(*, level: int, assambly: int, sizes: tuple[int] = (1,)):
+def get_assambly_item_btns(*, level: int, assambly: int, url: str | None = None, sizes: tuple[int] = (1,)):
     keyboard = InlineKeyboardBuilder()
-    keyboard.add(InlineKeyboardButton(text='Назад', callback_data=MenuCallBack(level=level - 1).pack()))
-    keyboard.add(InlineKeyboardButton(text='Смотреть', callback_data=MenuCallBack(level=level + 1, assambly=assambly).pack()))
+    keyboard.add(InlineKeyboardButton(text='Назад ◀️', callback_data=MenuCallBack(level=level - 1).pack()))
+    keyboard.add(InlineKeyboardButton(text='Смотреть инструкцию 👓', callback_data=MenuCallBack(level=level + 1, assambly=assambly).pack()))
+
+    if url is not None:
+        keyboard.add(InlineKeyboardButton(text='Посмотреть на WB 🏪', url=url))
+
     return keyboard.adjust(*sizes).as_markup()
 
 
@@ -62,7 +66,7 @@ def get_page_btns(
     keyboard = InlineKeyboardBuilder()
     keyboard.add(
         InlineKeyboardButton(
-            text='Назад',
+            text='Назад ↩️',
             callback_data=MenuCallBack(
                 level=level - 1,
                 assambly=assambly
